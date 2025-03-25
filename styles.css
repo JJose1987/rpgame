@@ -1,0 +1,9 @@
+/* Styles */
+body {
+   font-family: monospace;
+   font-size: 1vmax;
+   line-height: 1.5vmax;
+   margin: 0.1%;
+   text-align: left;
+   vertical-align: top;
+}
