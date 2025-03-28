@@ -4,6 +4,12 @@ body {
    font-size: 1vmax;
    line-height: 1.5vmax;
    margin: 0.1%;
-   text-align: left;
+   text-align: center;
    vertical-align: top;
+   overflow: hidden;
+}
+
+canvas {
+    border: 0.1vmax inset #000000;
+    border-radius: 0.25vmax;
 }
