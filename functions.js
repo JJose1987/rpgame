@@ -109,7 +109,7 @@ function InversoColor(hex) {
 
 // Dibujar tablero
 function table() {
-    var radio = 24;
+    var radio = 20;
     var size = h / radio;
 
     var karg = {colorLine : '#fffffff', size : size, sides : 6, fill : false, rotate : (90 / 1.5), line : 1};
