@@ -89,6 +89,8 @@ function main() {
         $('canvas')
             .attr('height', h)
             .attr('width' , w);
+        
+        update();
     });
 
     //
