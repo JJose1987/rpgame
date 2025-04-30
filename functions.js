@@ -72,8 +72,8 @@ magia es igual a 1ºd6 = 1, 2ºd6 = x, 3ºd6 > 1
 var cnv;
 var ctx;
 
-var h = $(window).height() * 0.965;
-var w = $(window).width()  * 0.975;
+var h = $(window).height() * 0.994;
+var w = $(window).width()  * 0.998;
 
 // Funciones
 function main() {
@@ -109,15 +109,17 @@ function InversoColor(hex) {
 
 // Dibujar tablero
 function table() {
-    var size = h / 12;
+    var radio = 24;
+    var size = h / radio;
 
-    var lado = size * (Math.PI / 3);
     var karg = {colorLine : '#fffffff', size : size, sides : 6, fill : false, rotate : (90 / 1.5), line : 1};
+    var lado = size * (Math.PI / (karg['sides'] / 2));
 
-    for (var x = 0; x <= 19; x++) {
-        for (var y = 0; y <= 6; y++) {
+    for (var x = 0; x <= parseInt(radio / 0.63); x++) {
+        for (var y = 0; y <= parseInt(radio / 1.8); y++) {
             karg['x'] = x * (lado * (1 + 0.42));
             karg['y'] = y * (lado * (1 + (1 / 1.5))) + (x % 2 == 0?0:lado * (1 / 1.2));
+
             drawPoligon(ctx, karg);
         }   
     }
