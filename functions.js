@@ -83,8 +83,8 @@ function main() {
     // Eventos
     // Código a ejecutar cuando la ventana cambia de tamaño
     $(window).resize(function() {
-        h = $(window).height() * 0.965;
-        w = $(window).width()  * 0.975;
+        h = $(window).height() * 0.994;
+        w = $(window).width()  * 0.998;
 
         $('canvas')
             .attr('height', h)
@@ -121,6 +121,6 @@ function table() {
             karg['y'] = y * (lado * (1 + (1 / 1.5))) + (x % 2 == 0?0:lado * (1 / 1.2));
 
             drawPoligon(ctx, karg);
-        }   
+        }
     }
 }
