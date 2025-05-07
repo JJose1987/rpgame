@@ -86,22 +86,19 @@ function main() {
         h = $(window).height() * 0.994;
         w = $(window).width()  * 0.998;
 
-        $('canvas')
-            .attr('height', h)
-            .attr('width' , w);
-        
         update();
     });
 
     //
-    $('canvas')
-        .attr('height', h)
-        .attr('width' , w);
     update();
 }
 
 // Actualizar valores de la clase
 function update() {
+    $('canvas')
+        .attr('height', h)
+        .attr('width' , w);
+
     table();
 }
 // Invertir un color dado
@@ -111,16 +108,15 @@ function InversoColor(hex) {
 
 // Dibujar tablero
 function table() {
-    var radio = 20;
-    var size = h / radio;
+    var radio = 15;
 
-    var karg = {colorLine : '#fffffff', size : size, sides : 6, fill : false, rotate : (90 / 1.5), line : 1};
-    var lado = size * (Math.PI / (karg['sides'] / 2));
+    var karg = {colorLine : '#fffffff', size : (h / radio), sides : 4, fill : false, rotate : (90 / 2), line : 1};
+    var lado = karg['size'] * (Math.PI / (karg['sides'] / 2));
 
-    for (var x = 0; x <= parseInt(radio / 0.63); x++) {
-        for (var y = 0; y <= parseInt(radio / 1.8); y++) {
-            karg['x'] = x * (lado * (1 + 0.42));
-            karg['y'] = y * (lado * (1 + (1 / 1.5))) + (x % 2 == 0?0:lado * (1 / 1.2));
+    for (var x = 0; x <= parseInt(radio * 1.6); x++) {
+        for (var y = 0; y <= parseInt(radio * 0.7); y++) {
+            karg['x'] = lado * (x == 0?0.5:(x + 0.39 - (((x - 1) >= 0?(x - 1):0) * 0.09)));
+            karg['y'] = lado * (y == 0?0.5:(y + 0.39 - (((y - 1) >= 0?(y - 1):0) * 0.09)));
 
             drawPoligon(ctx, karg);
         }
