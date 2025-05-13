@@ -1,6 +1,8 @@
 /* Styles */
+@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap');
+
 body {
-   font-family: monospace;
+   font-family: "MedievalSharp", monospace;
    font-size: 1vmax;
    line-height: 1.5vmax;
    margin: 0.1%;

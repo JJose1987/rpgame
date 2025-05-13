@@ -14,7 +14,8 @@
 
 ///
 cartas imagen
-Imagen de estilo pixel art que representa un pergamino antiguo de color beige claro con bordes enrollados en la parte superior e inferior. En el centro del pergamino habra dibujado [], rodeada de un aura. En la esquina inferior derecha del interior de dentro del pergamino por encima del enrollado inferior, se encuentra dibujado un dado rojo de seis caras con puntos blancos en vista isometrica. El fondo es completamente blanco.
+Imagen de estilo pixel art que representa un pergamino antiguo de color beige claro con bordes enrollados en la parte superior e inferior. En la esquina inferior derecha del interior de dentro del pergamino por encima del enrollado inferior, se encuentra dibujado un dado rojo de seis caras con puntos blancos en vista isometrica. El fondo es completamente blanco.
+En el centro del pergamino habra dibujado en estilo pixel art []
 
 cartas posibles al buscar (3d6)
 (1ºd6)
@@ -75,18 +76,40 @@ var ctx;
 var h = $(window).height() * 0.994;
 var w = $(window).width()  * 0.998;
 
+var mouse = {x : 0, y : 0};
+var coord = {x : 0, y : 0};
+
+var tile = {x : 55, y : 55};
+/**/
+var a00 = new Image();
+/**/
 // Funciones
 function main() {
+    //
+    if (isPhone) {
+        tile = {x : 10, y : 10};
+    }
     // Cargar valores
     cnv = document.getElementById('game');
     ctx = cnv.getContext('2d');
     // Eventos
-    // Código a ejecutar cuando la ventana cambia de tamaño
+    // Ejecutar cuando la ventana cambia de tamaño
     $(window).resize(function() {
         h = $(window).height() * 0.994;
         w = $(window).width()  * 0.998;
 
         update();
+    });
+
+    // Ejecutar al hacer click en el canvas
+    $('#game').on('click', function(event) {
+        var rect = this.getBoundingClientRect();
+
+        mouse['x'] = event.clientX - rect.left;
+        mouse['y'] = event.clientY - rect.top;
+
+        coord['x'] = parseInt(mouse['x'] / tile['x']);
+        coord['y'] = parseInt(mouse['y'] / tile['y']);
     });
 
     //
@@ -101,24 +124,27 @@ function update() {
 
     table();
 }
-// Invertir un color dado
-function InversoColor(hex) {
-    return rgbToHex((255 - hexToRgb(hex)['r']), (255 - hexToRgb(hex)['g']), (255 - hexToRgb(hex)['b']));
-}
 
 // Dibujar tablero
 function table() {
     var radio = 15;
 
-    var karg = {colorLine : '#fffffff', size : (h / radio), sides : 4, fill : false, rotate : (90 / 2), line : 1};
+    var karg = {colorLine : '#fffffff', size : (h / radio), sides : 4, fill : false, rotate : (90 / 2), line : 0.25};
     var lado = karg['size'] * (Math.PI / (karg['sides'] / 2));
 
-    for (var x = 0; x <= parseInt(radio * 1.6); x++) {
-        for (var y = 0; y <= parseInt(radio * 0.7); y++) {
+    for (var x = 0; x <= (w / tile['x']); x++) {
+        for (var y = 0; y <= (h / tile['y']); y++) {
             karg['x'] = lado * (x == 0?0.5:(x + 0.39 - (((x - 1) >= 0?(x - 1):0) * 0.09)));
             karg['y'] = lado * (y == 0?0.5:(y + 0.39 - (((y - 1) >= 0?(y - 1):0) * 0.09)));
 
             drawPoligon(ctx, karg);
         }
     }
+    
+    a00.onload = function() {
+        ctx.drawImage(a00, 0, 0, X, Y);
+        
+    };
+    
+    a00.src = '16bit/a-00.jpg';
 }
