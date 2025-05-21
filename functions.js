@@ -1,7 +1,7 @@
 /* JavaScript */
 /* https://www.degraeve.com/reference/urlencoding.php */
 /*
-    Imagen : "En estilo pixel art, [animal] zombie, agresivo, con una runa roja dibujada encima de los ojos, ojos verdes, el color del pelo muy oscuro y color de la piel muy clara un pergamino atado en una de sus piernas, [descripción]. El diseño es detallado con sombras y colores vibrantes, en un fondo blanco, en un estilo de juego retro similar a los RPG clásicos de 16 bits.
+    Imagen : "En estilo realista, [animal] zombie, en posición agresiva y de ataque, con una runa roja dibujada encima de los ojos, ojos verdes, el color del pelo muy oscuro y color de la piel muy clara un pergamino atado en una de sus piernas, [descripcion]. El diseño es detallado con sombras y colores vibrantes, en un fondo blanco.
     Cartas 2 caracteristicas: N Dados de ataque o defensa, N Usos, 4 distancia magia, 3 distancia arco
 
     Dientes  Comprar armas y provisiones
@@ -14,7 +14,7 @@
 
 ///
 cartas imagen
-Imagen de estilo pixel art que representa un pergamino antiguo de color beige claro con bordes enrollados en la parte superior e inferior. En la esquina inferior derecha del interior de dentro del pergamino por encima del enrollado inferior, se encuentra dibujado un dado rojo de seis caras con puntos blancos en vista isometrica. El fondo es completamente blanco.
+Imagen de estilo real que representa un pergamino antiguo de color beige claro con bordes enrollados en la parte superior e inferior. En la esquina inferior derecha del interior de dentro del pergamino por encima del enrollado inferior, se encuentra dibujado un dado rojo de seis caras con puntos blancos en vista isometrica. El fondo es completamente blanco.
 En el centro del pergamino habra dibujado en estilo pixel art []
 
 cartas posibles al buscar (3d6)
@@ -59,10 +59,10 @@ magia es igual a 1ºd6 = 1, 2ºd6 = x, 3ºd6 > 1
     13, nigromante
     14, caballo
     15, caballo espada
-    16, caballo nigromante
-    17, elefante
-    18, elefante espada
-    19, elefante nigromante
+    16, caballo arquero
+    17, caballo gordo
+    18, caballo musculoso
+    19, caballo nigromante
     20, dragon desnudo
     21, dragon nigromante
     22, dragon armado
