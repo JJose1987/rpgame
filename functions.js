@@ -20,54 +20,42 @@ En el centro del pergamino habra dibujado en estilo pixel art []
 cartas posibles al buscar (3d6)
 (1ºd6)
     Nada
-    Vida
-    Invoca (dos ojos verdes brillantes con una runa roja entre ambos)
-    Espada (5ºd6 para indicar si => [3 (1 manos) 3+ (2 manos)])
-    Arco
-    Escudo
-
-2ºd6
-    Metal	        Dureza (Mohs)	Estado a Temperatura Ambiente (25 °C)
-    Indio (In)	    1.2	            Sólido (se raya con la uña)
-    Plata (Ag)	    2.5–3	        Sólido
-    Cobre (Cu)	    3	            Sólido
-    Hierro (Fe)	    4	            Sólido
-    Titanio (Ti)	6	            Sólido
-    Cromo (Cr)	    8.5	            Sólido (uno de los más duros)
+    Vida   (En estilo realista, una seta donde la cuticula sera berro, el sombrero un aguacate, el himenoforo tendra colgando granos de soja y pistacho, el anillo tendra escamas de salmón, el pie pelo de conejo, la volva seran dos patas de vaca. El diseño es detallado con sombras y colores vibrantes, en un fondo blanco.)
+    Invoca (3ºd6 para indicar elemento)
+    Espada (2ºd6 para indicar si => [3 (1 manos) 3+ (2 manos)], 3ºd6 para indicar elemento)
+    Arco   (3ºd6 para indicar elemento)
+    Escudo (2ºd6 para indicar si => [3 (1 manos) 3+ (2 manos)], 3ºd6 para indicar elemento)
 
 3ºd6
-    Nada
+    Zombie
     Veneno
     Fuego
     Electricidad
     Radio
     Explosion
 
-magia es igual a 1ºd6 = 1, 2ºd6 = x, 3ºd6 > 1
-
 
 4d6 el zombie es resultado de sumar todos los dados
-    04, araña
-    05, murcielago
-    06, cuervo
-    07, rata
-    08, lobo
-    09, normal
-    10, arquero
-    11, gordo
-    12, musculoso
-    13, nigromante
-    14, caballo
-    15, caballo espada
-    16, caballo arquero
-    17, caballo gordo
-    18, caballo musculoso
-    19, caballo nigromante
-    20, dragon desnudo
-    21, dragon nigromante
-    22, dragon armado
-    23, dios nigromante
-    24, dios armado
+    01, araña
+    02, murcielago
+    03, cuervo
+    04, rata
+    05, lobo
+    06, normal
+    07, arquero
+    08, gordo
+    09, musculoso
+    10, nigromante
+    11, caballo
+    12, caballo espada
+    13, caballo arquero
+    14, caballo gordo
+    15, caballo musculoso
+    16, caballo nigromante
+    17, buitre
+    18, condor
+    19, volador armado
+    20, volador nigromante
 */
 // Variables
 var cnv;
