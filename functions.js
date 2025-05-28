@@ -19,23 +19,22 @@ En el centro del pergamino habra dibujado en estilo pixel art []
 
 cartas posibles al buscar (3d6)
 (1ºd6)
-    Nada
-    Vida   (En estilo realista, una seta donde la cuticula sera berro, el sombrero un aguacate, el himenoforo tendra colgando granos de soja y pistacho, el anillo tendra escamas de salmón, el pie pelo de conejo, la volva seran dos patas de vaca. El diseño es detallado con sombras y colores vibrantes, en un fondo blanco.)
-    Invoca (3ºd6 para indicar elemento)
-    Espada (2ºd6 para indicar si => [3 (1 manos) 3+ (2 manos)], 3ºd6 para indicar elemento)
-    Arco   (3ºd6 para indicar elemento)
-    Escudo (2ºd6 para indicar si => [3 (1 manos) 3+ (2 manos)], 3ºd6 para indicar elemento)
+    01 Nada
+    02 Vida   (En estilo realista, una bota de vino en piel de rata zombie con lineas rojas dibujadas y una runa. El diseño es detallado con sombras y colores vibrantes, en un fondo blanco.)
+    03 Invoca (3ºd6 para indicar elemento)
+    04 Espada (2ºd6 para indicar si => [3 (1 manos) 3+ (2 manos)], 3ºd6 para indicar elemento)
+    05 Arco   (3ºd6 para indicar elemento)
+    06 Escudo (2ºd6 para indicar si => [3 (1 manos) 3+ (2 manos)], 3ºd6 para indicar elemento)
 
 3ºd6
-    Zombie
-    Veneno
-    Fuego
-    Electricidad
-    Radio
-    Explosion
+    01 Zombie - Lanzar 1d20
+    02 Sangre - Vida       / Veneno
+    03 Fuego  - Ataque     / Defensa
+    04 Luz    - Precisión  / Evasión
+    05 Viento - Iniciativa / Resistencia al aturdimiento
+    06 Rayo   - Crítico    / Resistencia al crítico
 
-
-4d6 el zombie es resultado de sumar todos los dados
+1d20 el zombie es resultado de sumar todos los dados
     01, araña
     02, murcielago
     03, cuervo
