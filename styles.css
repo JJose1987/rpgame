@@ -1,17 +1,14 @@
 /* Styles */
-@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap');
-
 body {
-   font-family: "MedievalSharp", monospace;
-   font-size: 1vmax;
-   line-height: 1.5vmax;
-   margin: 0.1%;
-   text-align: center;
-   vertical-align: top;
-   overflow: hidden;
-}
-
-canvas {
-    border: 0.1vmax inset #000000;
-    border-radius: 0.25vmax;
+    align-items: center;
+    background: #202020;
+    display: flex;
+    font-family: monospace;
+    font-size: 1vmax;
+    height: 100vh;
+    justify-content: center;
+    line-height: 1.5vmax;
+    margin: 0.1%;
+    text-align: left;
+    vertical-align: top;
 }
