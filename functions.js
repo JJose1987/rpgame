@@ -13,7 +13,7 @@ let boardSize = 0;
 let squareSize = 0;
 
 var board = {
-    player_one: {col: 4, row: 4, color: '#000000', src: "0x265F", walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], attack: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], move : false, life : 4, stamina : 3, maxStamina : 3, maxLife : 4}
+    player_one: {col: 4, row: 4, color: '#000000', src: "0x2617", walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], attack: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], move : false, life : 4, stamina : 3, maxStamina : 3, maxLife : 4}
   , enemies   : []
 };
 
