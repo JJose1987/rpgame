@@ -12,21 +12,18 @@ const margin  = 1;
 let boardSize = 0;
 let squareSize = 0;
 
-var board = {   
+var board = {
     player_one: {col: 4, row: 4, color: '#000000', src: "0x265F", walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], attack: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], move : false, life : 4, stamina : 3, maxStamina : 3, maxLife : 4}
   , enemies   : []
 };
 
 var typePieces = [
-    {src: "0x265A", walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], stamina : 1, life : 1}
-  , {src: "0x265B", walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], stamina : 1, life : 1}
-  , {src: "0x265C", walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], stamina : 1, life : 1}
-  , {src: "0x265D", walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], stamina : 1, life : 1}
-  , {src: "0x265E", walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], stamina : 1, life : 1}
-  , {src: "0x2617", walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], stamina : 1, life : 1}
-  , {src: "0x265F", walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], stamina : 1, life : 1}
-  , {src: "0x2623", walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], stamina : 1, life : 1}
-  , {src: "0x2622", walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], stamina : 1, life : 1}
+    {src: "0x265F", walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], stamina : 1, life : 1}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  // Rey
+  , {src: "0x265E", walk: [[+2, +1], [+2, -1], [-2, +1], [-2, -1], [+1, +2], [-1, +2], [+1, -2], [-1, -2]], stamina : 1, life : 1}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  // Reina
+  , {src: "0x265D", walk: [[+1, +1], [+1, -1], [-1, -1], [-1, +1], [+2, +2], [+2, -2], [-2, -2], [-2, +2], [+3, +3], [+3, -3], [-3, -3], [-3, +3], [+4, +4], [+4, -4], [-4, -4], [-4, +4], [+5, +5], [+5, -5], [-5, -5], [-5, +5], [+6, +6], [+6, -6], [-6, -6], [-6, +6], [+7, +7], [+7, -7], [-7, -7], [-7, +7], [+8, +8], [+8, -8], [-8, -8], [-8, +8]], stamina : 1, life : 1}                                                                                                                                                                                                                                                                                                                                  // Torre
+  , {src: "0x265C", walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -8], [+2, +0], [-2, +0], [+0, +2], [+0, -7], [+3, +0], [-3, +0], [+0, +3], [+0, -6], [+4, +0], [-4, +0], [+0, +4], [+0, -5], [+5, +0], [-5, +0], [+0, +5], [+0, -4], [+6, +0], [-6, +0], [+0, +6], [+0, -3], [+7, +0], [-7, +0], [+0, +7], [+0, -2], [+8, +0], [-8, +0], [+0, +8], [+0, -1]], stamina : 1, life : 1}                                                                                                                                                                                                                                                                                                                                  // Alfin
+  , {src: "0x265B", walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1], [+2, +0], [-2, +0], [+0, +2], [+0, -2], [+2, +2], [-2, +2], [-2, -2], [+2, -2], [+3, +0], [-3, +0], [+0, +3], [+0, -3], [+3, +3], [-3, +3], [-3, -3], [+3, -3], [+4, +0], [-4, +0], [+0, +4], [+0, -4], [+4, +4], [-4, +4], [-4, -4], [+4, -4], [+5, +0], [-5, +0], [+0, +5], [+0, -5], [+5, +5], [-5, +5], [-5, -5], [+5, -5], [+6, +0], [-6, +0], [+0, +6], [+0, -6], [+6, +6], [-6, +6], [-6, -6], [+6, -6], [+7, +0], [-7, +0], [+0, +7], [+0, -7], [+7, +7], [-7, +7], [-7, -7], [+7, -7], [+8, +0], [-8, +0], [+0, +8], [+0, -8], [+8, +8], [-8, +8], [-8, -8], [+8, -8]], stamina : 1, life : 1}  // Caballo
+  , {src: "0x265A", walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], stamina : 1, life : 1}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  // Peon
 ];
 
 var typeWeapons = [
@@ -69,13 +66,20 @@ function main() {
 
         clickBoard(c, r);
     });
-    
+
     $('#board').on('mousemove', function(e) {
         var c = e.pageX - ($(this).offset()).left;
         var r = e.pageY - ($(this).offset()).top;
-        
+
         mousemoveBoard(c, r);
     });
+
+    var ind = Math.floor(Math.random() * typePieces.length);
+    var edge = Math.random() < 0.5 ? 1 : 8;
+    var mid  = 1 + Math.floor(Math.random() * 8);
+    var flip = Math.random() < 0.5;
+
+    board.enemies.push({col: flip ? edge : mid, row: flip ? mid : edge, color: '#880808', src: typePieces[ind].src, walk: typePieces[ind].walk});
 
     update();
 }
@@ -118,111 +122,68 @@ function draw() {
     // Draw on the Board
     //      * player_one
     if (board.player_one.life > 0) {
-        if (board.player_one.move == true && board.player_one.stamina > 0) {
-            // Señalar el personaje escogido
-            ctx.beginPath();
-            ctx.fillStyle = '#829769';
-            ctx.fillRect((board.player_one.col * squareSize), (board.player_one.row * squareSize), squareSize, squareSize);
-            ctx.fill();
-            
-            // Marca a donde se puede mover
-            $.each(board.player_one.walk, function(index, value) {
-                var c = board.player_one.col + value[0];
-                var r = board.player_one.row + value[1];
-                
-                if (((r > 0) && (r < squares + 1)) && ((c > 0) && (c < squares + 1))) {
-                    // Detectamos colisión con OTROS enemigos
-                    var collision = -1;
-
-                    $.each(board.enemies, function(i, othervalue) {
-                        // Si otro enemigo YA está en la casilla a la que quiero ir
-                        if (othervalue.col === c && othervalue.row === r) {
-                            collision = i;
-                            
-                            ctx.beginPath();
-                            ctx.fillStyle = '#aaa23a';
-                            ctx.fillRect((othervalue.col * squareSize), (othervalue.row * squareSize), squareSize, squareSize);
-                            ctx.fill();
-                            
-                            return; // Rompemos el bucle interno, ya encontramos un choque
-                        }
-                    });
-
-                    if (!(collision > -1)) {
-                        ctx.beginPath();
-                        ctx.fillStyle = '#829769';
-                        ctx.arc(((c * squareSize) + squareSize / 2), ((r * squareSize) + squareSize / 2), squareSize / 7, 0, Math.PI * 2);
-                        ctx.fill();
-                    }
-                }
-    
-            });
-        }
-        // Dibujamos al protagonista
-        drawPlayer(board.player_one);
-    
         //      * Añadir y mover enemies
         if (board.player_one.stamina == 0) {
-            // Mover
+            // Mover enemigos
             $.each(board.enemies, function(index, value) {
-                // Calculamos la diferencia de distancia entre el jugador y el enemigo actual
-                var diffCol = board.player_one.col - value.col;
-                var diffRow = board.player_one.row - value.row;
-                
-                // Math.sign devuelve:
-                //  1 si el jugador está a la derecha/abajo
-                // -1 si el jugador está a la izquierda/arriba
-                //  0 si están en la misma línea
-    
-                var stepCol = Math.sign(diffCol);
-                var stepRow = Math.sign(diffRow);
-                
-                // 2. Predecimos la futura posición
-                var futureCol = value.col + stepCol;
-                var futureRow = value.row + stepRow;
-                
-                // 3. Detectamos colisión con OTROS enemigos
-                var collision = false;
-                
-                $.each(board.enemies, function(i, othervalue) {
-                    // No comparamos con nosotros mismos (index !== i)
-                    if (index !== i) {
-                        // Si otro enemigo YA está en la casilla a la que quiero ir
-                        if (othervalue.col === futureCol && othervalue.row === futureRow) {
-                            collision = true;
-                            return false; // Rompemos el bucle interno, ya encontramos un choque
+                let bestMove = { col: value.col, row: value.row };
+                let minDistance = Math.hypot(board.player_one.col - value.col, board.player_one.row - value.row);
+
+                // 1. Evaluar cada movimiento posible según su propiedad 'walk'
+                $.each(value.walk, function(i, step) {
+                    let futureCol = value.col + step[0];
+                    let futureRow = value.row + step[1];
+
+                    // 2. Verificar que el movimiento esté dentro del tablero
+                    if (futureCol >= 1 && futureCol <= squares && futureRow >= 1 && futureRow <= squares) {
+
+                        // 3. No mover a la casilla EXACTA del jugador (dejarlo a su alrededor)
+                        if (!(futureCol === board.player_one.col && futureRow === board.player_one.row)) {
+
+                            // 4. Calcular distancia Euclidiana al jugador
+                            let dist = Math.hypot(board.player_one.col - futureCol, board.player_one.row - futureRow);
+
+                            if (dist < minDistance) {
+                                // 5. Detectar colisión con OTROS enemigos antes de confirmar
+                                let collision = false;
+                                $.each(board.enemies, function(idx, other) {
+                                    if (index !== idx && other.col === futureCol && other.row === futureRow) {
+                                        collision = true;
+                                        return false;
+                                    }
+                                });
+
+                                if (!collision) {
+                                    minDistance = dist;
+                                    bestMove = { col: futureCol, row: futureRow };
+                                }
+                            }
                         }
                     }
                 });
-                
-                // 4. Si NO hay colisión, hacemos el movimiento efectivo
-                if (!collision) {
-                    // 5. Detectamos si colisiona con el personaje y quitamos un punto de vida
-                    if (futureCol == board.player_one.col && futureRow == board.player_one.row) {
-                        board.player_one.life -= 1;
-                    } else {
-                        value.col = futureCol;
-                        value.row = futureRow;
-                    }
+
+                // 6. Si el enemigo ya está adyacente al jugador y no se movió, "ataca"
+                let distFinal = Math.hypot(board.player_one.col - value.col, board.player_one.row - value.row);
+                if (distFinal <= 1.5) { // Está en una casilla contigua (incluyendo diagonales)
+                    board.player_one.life -= 1;
                 }
-                
+
+                // Aplicar el mejor movimiento encontrado
+                value.col = bestMove.col;
+                value.row = bestMove.row;
             });
             // Añadir
             if (board.enemies.length < Math.pow(squares, 2)) {
                 // Escoge el enemigo al azar
                 var ind = Math.floor(Math.random() * typePieces.length);
-                var aux_enemies = {col: 1, row: 1, color: '#880808', src: typePieces[ind].src}
+                var edge = Math.random() < 0.5 ? 1 : 8;
+                var mid  = 1 + Math.floor(Math.random() * 8);
+                var flip = Math.random() < 0.5;
 
-                if (Math.floor(Math.random() * 2) == 0) {
-                    aux_enemies.row = Math.random() < 0.5 ? 1 : 8;            
-                    aux_enemies.col = 1 + Math.floor(Math.random() * 8);
-                } else {
-                    aux_enemies.row = 1 + Math.floor(Math.random() * 8);
-                    aux_enemies.col = Math.random() < 0.5 ? 1 : 8; 
-                }
+                var aux_enemies = {col: flip ? edge : mid, row: flip ? mid : edge, color: '#880808', src: typePieces[ind].src, walk: typePieces[ind].walk};
                 // Detectamos colisión con OTROS enemigos
                 var collision = false;
-    
+
                 $.each(board.enemies, function(i, othervalue) {
                     if (othervalue.col === aux_enemies.col && othervalue.row === aux_enemies.row) {
                         collision = true;
@@ -236,16 +197,27 @@ function draw() {
                     }
                 }
             }
-    
+
             board.player_one.stamina = board.player_one.maxStamina;
         }
-    
+
+        if (board.player_one.move == true && board.player_one.stamina > 0) {
+            // Señalar el personaje escogido
+            ctx.beginPath();
+            ctx.fillStyle = '#829769';
+            ctx.fillRect((board.player_one.col * squareSize), (board.player_one.row * squareSize), squareSize, squareSize);
+            ctx.fill();
+        }
+        // Dibujamos al protagonista
+        drawPlayer(board.player_one, board.enemies);
+
+        // Dibujar a los enemigos
         $.each(board.enemies, function(index, value) {
-            drawPlayer(value);
+            drawPlayer(value, [board.player_one]);
         });
-    
+
     }
-    
+
     if (board.player_one.life > 0) {
         // Life Marcador
         for (let l = 0; l < board.player_one.life; l++) {
@@ -268,9 +240,30 @@ function draw() {
             ctx.fillText(String.fromCodePoint('0x2666'), squareSize + (s * squareSize / 2), (squareSize / 1.5));
             ctx.fill();
         }
-    } else if (board.player_one.life <= 0) {
+
         ctx.beginPath();
-        ctx.font         = 'italic ' + (squareSize * 1) + 'px Consolas';
+        ctx.font         = (squareSize * 0.5) + 'px Consolas';
+        ctx.textAlign    = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle    = '#ffffff';
+        ctx.fillText('POINTS', squareSize * 8.15, squareSize * 0.25);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.font         = (squareSize * 0.5) + 'px Consolas';
+        ctx.textAlign    = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle    = '#ffffff';
+        ctx.fillText('00000000', squareSize * 7.85, squareSize * 0.75);
+        ctx.fill();
+    } else if (board.player_one.life <= 0) {
+        // Clear
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // Draw the Board
+        drawBoard();
+
+        ctx.beginPath();
+        ctx.font         = (squareSize * 1) + 'px Consolas';
         ctx.textAlign    = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillStyle    = '#ffffff';
@@ -282,10 +275,10 @@ function draw() {
         ctx.textAlign    = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillStyle    = '#000000';
-        
+
         var x = squareSize * ((board.player_one.row + 0.5) + (board.player_one.row * 0.02));
         var y = squareSize * (board.player_one.col + 0.5);
-        
+
         ctx.fillText(String.fromCodePoint('0x2B6E'), y, x);
         ctx.fill();
     }
@@ -304,16 +297,63 @@ function drawBoard() {
 }
 
 // Dibujar Jugador
-function drawPlayer(player) {
-    var x = squareSize * ((player.row + 0.5) + (player.row * 0.02));
-    var y = squareSize * (player.col + 0.5);
+function drawPlayer(obj, collisions = null) {
+    var x = squareSize * ((obj.row + 0.5) + (obj.row * 0.02));
+    var y = squareSize *  (obj.col + 0.5);
+
+    $.each(obj.walk, function(index, value) {
+        var c = obj.col + value[0];
+        var r = obj.row + value[1];
+
+        if (((r > 0) && (r < squares + 1)) && ((c > 0) && (c < squares + 1))) {
+            // Detectamos colisión con OTROS enemigos
+            var collision = -1;
+
+            $.each(collisions, function(i, othervalue) {
+                // Si otro enemigo YA está en la casilla a la que quiero ir
+                if (othervalue.col === c && othervalue.row === r) {
+                    collision = i;
+
+                    if (collisions[0] != board.player_one) {
+                        ctx.beginPath();
+                        ctx.fillStyle = '#aaa23a';
+                        ctx.fillRect((othervalue.col * squareSize), (othervalue.row * squareSize), squareSize, squareSize);
+                        ctx.fill();
+                    }
+                    return; // Rompemos el bucle interno, ya encontramos un choque
+                }
+            });
+
+            if (!(collision > -1)) {
+                if (collisions[0] != board.player_one) {
+                    drawPoligon(ctx, {color    : '#829769'
+                                    , colorLine: (r + c) % 2 === 0 ? '#b58863' : '#f0d9b5'
+                                    , x        : ((c * squareSize) + squareSize / 2)
+                                    , y        : ((r * squareSize) + squareSize / 2)
+                                    , size     : (squareSize / 7)
+                                    , sides    : 6
+                                    , fill     : true
+                                    , rotate   : 90});
+                } else {
+                    drawPoligon(ctx, {color    : '#aaa23a'
+                                    , colorLine: (r + c) % 2 === 0 ? '#b58863' : '#f0d9b5'
+                                    , x        : ((c * squareSize) + squareSize / 2)
+                                    , y        : ((r * squareSize) + squareSize / 2)
+                                    , size     : (squareSize / 7)
+                                    , sides    : 3
+                                    , fill     : true
+                                    , rotate   : 90});
+                }
+            }
+        }
+    });
 
     ctx.beginPath();
     ctx.font         = squareSize + 'px Consolas';
     ctx.textAlign    = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillStyle    = player.color;
-    ctx.fillText(String.fromCodePoint(player.src), y, x);
+    ctx.fillStyle    = obj.color;
+    ctx.fillText(String.fromCodePoint(obj.src), y, x);
     ctx.fill();
 }
 
@@ -345,7 +385,7 @@ function clickBoard(c = 0, r = 0) {
                         board.player_one.col = aux_c;
                         board.player_one.row = aux_r;
                     }
-    
+
                     draw();
                     return; // Rompemos el bucle interno, ya encontramos un choque
                 }
@@ -355,8 +395,11 @@ function clickBoard(c = 0, r = 0) {
         if (board.player_one.life > 0) {
             board.player_one.move = true;
         } else {
+            // Reempezar la partida
             board.player_one.life    = board.player_one.maxLife;
             board.player_one.stamina = board.player_one.maxStamina;
+            
+            board.enemies            = [];
         }
         draw();
     }
