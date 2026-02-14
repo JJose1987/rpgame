@@ -6,7 +6,7 @@
 var h, w;
 var canvas, ctx;
 
-const squares = 12;
+const squares =8;
 const margin  = 1;
 
 let boardSize = 0;
