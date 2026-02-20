@@ -189,6 +189,32 @@ function draw() {
                         return false; // Rompemos el bucle interno, ya encontramos un choque
                     }
                 });
+                //
+                // 3. Si hay colisión, buscar CUALQUIER posición libre en los bordes
+                if (collision) {
+                let possiblePositions = [];
+                // Generar todas las posiciones de los bordes (fila 1, fila 8, col 1, col 8)
+                for (let i = 1; i <= squares; i++) {
+                possiblePositions.push({c: 1, r: i}, {c: squares, r: i}, {c: i, r: 1}, {c: i, r: squares});
+                }
+                
+                // Mezclar posiciones para que el spawn sea aleatorio
+                possiblePositions.sort(() => Math.random() - 0.5);
+                
+                for (let pos of possiblePositions) {
+                let isOccupied = board.enemies.some(e => e.col === pos.c && e.row === pos.r) || 
+                (pos.c === board.player_one.col && pos.y === board.player_one.row);
+                
+                if (!isOccupied) {
+                aux_enemies.col = pos.c;
+                aux_enemies.row = pos.r;
+                collision = false; 
+                break;
+                }
+                }
+                }
+                
+                
                 // Si NO hay colisión,incluimos la enemigo
                 if (!collision) {
                     if (aux_enemies.col != board.player_one.col && aux_enemies.row != board.player_one.row) {
@@ -423,12 +449,13 @@ function mousemoveBoard(c = 0, r = 0) {
         // Area de juego
     }
     */
-}
-
-// Obtener ancho texto
-function obtenerAnchoTexto(texto, fuente) {
+    }
+    
+    // Obtener ancho texto
+    function obtenerAnchoTexto(texto, fuente) {
     // Definimos la fuente
     ctx.font = fuente;
     // Medimos el texto
     return (ctx.measureText(texto)).width;
-}
+    }return (ctx.measureText(texto)).width;
+    }
