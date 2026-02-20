@@ -449,13 +449,12 @@ function mousemoveBoard(c = 0, r = 0) {
         // Area de juego
     }
     */
-    }
+}
     
-    // Obtener ancho texto
-    function obtenerAnchoTexto(texto, fuente) {
+// Obtener ancho texto
+function obtenerAnchoTexto(texto, fuente) {
     // Definimos la fuente
     ctx.font = fuente;
     // Medimos el texto
     return (ctx.measureText(texto)).width;
-    }return (ctx.measureText(texto)).width;
-    }
+}
