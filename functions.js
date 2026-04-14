@@ -6,24 +6,31 @@
 var h, w;
 var canvas, ctx;
 
-const squares =8;
+const squares = 8;
 const margin  = 1;
 
 let boardSize = 0;
 let squareSize = 0;
 
 var board = {
-    player_one: {col: 4, row: 4, src: "0x2617", color: '#000000', walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], stamina : 3, life : 4, maxStamina : 3, maxLife : 4, move : false, point: 0}
+    player_one: {col: 4, row: 4, src: "0x1F47E", color: '#aaa23a', walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], stamina : 3, life : 4, maxStamina : 3, maxLife : 4, move : false, point: 0}
   , enemies   : []
 };
 
 var typePieces = [
-    {src: "0x265F", walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], stamina : 1, life : 1, point: 10}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  // Rey
-  , {src: "0x265E", walk: [[+2, +1], [+2, -1], [-2, +1], [-2, -1], [+1, +2], [-1, +2], [+1, -2], [-1, -2]], stamina : 1, life : 1, point: 09}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  // Reina
-  , {src: "0x265D", walk: [[+1, +1], [+1, -1], [-1, -1], [-1, +1], [+2, +2], [+2, -2], [-2, -2], [-2, +2], [+3, +3], [+3, -3], [-3, -3], [-3, +3], [+4, +4], [+4, -4], [-4, -4], [-4, +4], [+5, +5], [+5, -5], [-5, -5], [-5, +5], [+6, +6], [+6, -6], [-6, -6], [-6, +6], [+7, +7], [+7, -7], [-7, -7], [-7, +7], [+8, +8], [+8, -8], [-8, -8], [-8, +8]], stamina : 1, life : 1, point: 05}                                                                                                                                                                                                                                                                                                                                  // Torre
-  , {src: "0x265C", walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -8], [+2, +0], [-2, +0], [+0, +2], [+0, -7], [+3, +0], [-3, +0], [+0, +3], [+0, -6], [+4, +0], [-4, +0], [+0, +4], [+0, -5], [+5, +0], [-5, +0], [+0, +5], [+0, -4], [+6, +0], [-6, +0], [+0, +6], [+0, -3], [+7, +0], [-7, +0], [+0, +7], [+0, -2], [+8, +0], [-8, +0], [+0, +8], [+0, -1]], stamina : 1, life : 1, point: 03}                                                                                                                                                                                                                                                                                                                                  // Alfin
-  , {src: "0x265B", walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1], [+2, +0], [-2, +0], [+0, +2], [+0, -2], [+2, +2], [-2, +2], [-2, -2], [+2, -2], [+3, +0], [-3, +0], [+0, +3], [+0, -3], [+3, +3], [-3, +3], [-3, -3], [+3, -3], [+4, +0], [-4, +0], [+0, +4], [+0, -4], [+4, +4], [-4, +4], [-4, -4], [+4, -4], [+5, +0], [-5, +0], [+0, +5], [+0, -5], [+5, +5], [-5, +5], [-5, -5], [+5, -5], [+6, +0], [-6, +0], [+0, +6], [+0, -6], [+6, +6], [-6, +6], [-6, -6], [+6, -6], [+7, +0], [-7, +0], [+0, +7], [+0, -7], [+7, +7], [-7, +7], [-7, -7], [+7, -7], [+8, +0], [-8, +0], [+0, +8], [+0, -8], [+8, +8], [-8, +8], [-8, -8], [+8, -8]], stamina : 1, life : 1, point: 03}  // Caballo
-  , {src: "0x265A", walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], stamina : 1, life : 1, point: 01}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  // Peon
+    {src: "0x265F", color: '#000000', count: 8, walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], stamina : 1, life : 1, point: 01}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  // Peon
+  , {src: "0x265E", color: '#000000', count: 2, walk: [[+2, +1], [+2, -1], [-2, +1], [-2, -1], [+1, +2], [-1, +2], [+1, -2], [-1, -2]], stamina : 1, life : 1, point: 03}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  // Caballo
+  , {src: "0x265D", color: '#000000', count: 2, walk: [[+1, +1], [+1, -1], [-1, -1], [-1, +1], [+2, +2], [+2, -2], [-2, -2], [-2, +2], [+3, +3], [+3, -3], [-3, -3], [-3, +3], [+4, +4], [+4, -4], [-4, -4], [-4, +4], [+5, +5], [+5, -5], [-5, -5], [-5, +5], [+6, +6], [+6, -6], [-6, -6], [-6, +6], [+7, +7], [+7, -7], [-7, -7], [-7, +7], [+8, +8], [+8, -8], [-8, -8], [-8, +8]], stamina : 1, life : 1, point: 03}                                                                                                                                                                                                                                                                                                                                  // Alfin
+  , {src: "0x265C", color: '#000000', count: 2, walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -8], [+2, +0], [-2, +0], [+0, +2], [+0, -7], [+3, +0], [-3, +0], [+0, +3], [+0, -6], [+4, +0], [-4, +0], [+0, +4], [+0, -5], [+5, +0], [-5, +0], [+0, +5], [+0, -4], [+6, +0], [-6, +0], [+0, +6], [+0, -3], [+7, +0], [-7, +0], [+0, +7], [+0, -2], [+8, +0], [-8, +0], [+0, +8], [+0, -1]], stamina : 1, life : 1, point: 05}                                                                                                                                                                                                                                                                                                                                  // Torre
+  , {src: "0x265B", color: '#000000', count: 1, walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1], [+2, +0], [-2, +0], [+0, +2], [+0, -2], [+2, +2], [-2, +2], [-2, -2], [+2, -2], [+3, +0], [-3, +0], [+0, +3], [+0, -3], [+3, +3], [-3, +3], [-3, -3], [+3, -3], [+4, +0], [-4, +0], [+0, +4], [+0, -4], [+4, +4], [-4, +4], [-4, -4], [+4, -4], [+5, +0], [-5, +0], [+0, +5], [+0, -5], [+5, +5], [-5, +5], [-5, -5], [+5, -5], [+6, +0], [-6, +0], [+0, +6], [+0, -6], [+6, +6], [-6, +6], [-6, -6], [+6, -6], [+7, +0], [-7, +0], [+0, +7], [+0, -7], [+7, +7], [-7, +7], [-7, -7], [+7, -7], [+8, +0], [-8, +0], [+0, +8], [+0, -8], [+8, +8], [-8, +8], [-8, -8], [+8, -8]], stamina : 1, life : 1, point: 09}  // Reina
+  , {src: "0x265A", color: '#000000', count: 1, walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], stamina : 1, life : 1, point: 10}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  // Rey
+
+  , {src: "0x265F", color: '#ffffff', count: 8, walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], stamina : 1, life : 1, point: 01}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  // Peon
+  , {src: "0x265E", color: '#ffffff', count: 2, walk: [[+2, +1], [+2, -1], [-2, +1], [-2, -1], [+1, +2], [-1, +2], [+1, -2], [-1, -2]], stamina : 1, life : 1, point: 03}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  // Caballo
+  , {src: "0x265D", color: '#ffffff', count: 2, walk: [[+1, +1], [+1, -1], [-1, -1], [-1, +1], [+2, +2], [+2, -2], [-2, -2], [-2, +2], [+3, +3], [+3, -3], [-3, -3], [-3, +3], [+4, +4], [+4, -4], [-4, -4], [-4, +4], [+5, +5], [+5, -5], [-5, -5], [-5, +5], [+6, +6], [+6, -6], [-6, -6], [-6, +6], [+7, +7], [+7, -7], [-7, -7], [-7, +7], [+8, +8], [+8, -8], [-8, -8], [-8, +8]], stamina : 1, life : 1, point: 03}                                                                                                                                                                                                                                                                                                                                  // Alfin
+  , {src: "0x265C", color: '#ffffff', count: 2, walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -8], [+2, +0], [-2, +0], [+0, +2], [+0, -7], [+3, +0], [-3, +0], [+0, +3], [+0, -6], [+4, +0], [-4, +0], [+0, +4], [+0, -5], [+5, +0], [-5, +0], [+0, +5], [+0, -4], [+6, +0], [-6, +0], [+0, +6], [+0, -3], [+7, +0], [-7, +0], [+0, +7], [+0, -2], [+8, +0], [-8, +0], [+0, +8], [+0, -1]], stamina : 1, life : 1, point: 05}                                                                                                                                                                                                                                                                                                                                  // Torre
+  , {src: "0x265B", color: '#ffffff', count: 1, walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1], [+2, +0], [-2, +0], [+0, +2], [+0, -2], [+2, +2], [-2, +2], [-2, -2], [+2, -2], [+3, +0], [-3, +0], [+0, +3], [+0, -3], [+3, +3], [-3, +3], [-3, -3], [+3, -3], [+4, +0], [-4, +0], [+0, +4], [+0, -4], [+4, +4], [-4, +4], [-4, -4], [+4, -4], [+5, +0], [-5, +0], [+0, +5], [+0, -5], [+5, +5], [-5, +5], [-5, -5], [+5, -5], [+6, +0], [-6, +0], [+0, +6], [+0, -6], [+6, +6], [-6, +6], [-6, -6], [+6, -6], [+7, +0], [-7, +0], [+0, +7], [+0, -7], [+7, +7], [-7, +7], [-7, -7], [+7, -7], [+8, +0], [-8, +0], [+0, +8], [+0, -8], [+8, +8], [-8, +8], [-8, -8], [+8, -8]], stamina : 1, life : 1, point: 09}  // Reina
+  , {src: "0x265A", color: '#ffffff', count: 1, walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], stamina : 1, life : 1, point: 10}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  // Rey
 ];
 
 var typeWeapons = [
@@ -78,7 +85,8 @@ function main() {
     var edge = Math.random() < 0.5 ? 1 : squares;
     var mid  = 1 + Math.floor(Math.random() * squares);
     var flip = Math.random() < 0.5;
-    board.enemies.push({col: flip ? edge : mid, row: flip ? mid : edge, color: '#880808', src: typePieces[ind].src, walk: typePieces[ind].walk});
+    board.enemies.push({col: flip ? edge : mid, row: flip ? mid : edge, color: typePieces[ind].color, src: typePieces[ind].src, walk: typePieces[ind].walk});
+    typePieces[ind].count = typePieces[ind].count - 1;
 
     update();
 }
@@ -172,14 +180,29 @@ function draw() {
                 value.row = bestMove.row;
             });
             // Añadir
-            if (board.enemies.length < Math.pow(squares, 2)) {
+            
+            // Filtramos los que tengan stock mayor a 0
+            var conTypePieces = $.grep(typePieces, function(item) {
+                return item.count > 0;
+            });
+
+            if (conTypePieces.length > 0) {
                 // Escoge el enemigo al azar
-                var ind  = Math.floor(Math.random() * typePieces.length);
+                var ind  = Math.floor(Math.random() * conTypePieces.length);
                 var edge = Math.random() < 0.5 ? 1 : squares;
                 var mid  = 1 + Math.floor(Math.random() * squares);
                 var flip = Math.random() < 0.5;
 
-                var aux_enemies = {col: flip ? edge : mid, row: flip ? mid : edge, color: '#880808', src: typePieces[ind].src, walk: typePieces[ind].walk, point: typePieces[ind].point};
+                var aux_enemies = {col: flip ? edge : mid, row: flip ? mid : edge, color: conTypePieces[ind].color, src: conTypePieces[ind].src, walk: conTypePieces[ind].walk, point: conTypePieces[ind].point};
+                // Actualizamos en el typePieces[ind].count
+                $.each(typePieces, function(ind, item) {
+                    if ((aux_enemies.color == typePieces[ind].color)
+                            && (aux_enemies.src == typePieces[ind].src)) {
+                        typePieces[ind].count = typePieces[ind].count - 1;
+                        return;
+                    }
+                });
+                
                 // Detectamos colisión con OTROS enemigos
                 var collision = false;
 
@@ -192,36 +215,34 @@ function draw() {
                 //
                 // 3. Si hay colisión, buscar CUALQUIER posición libre en los bordes
                 if (collision) {
-                let possiblePositions = [];
-                // Generar todas las posiciones de los bordes (fila 1, fila 8, col 1, col 8)
-                for (let i = 1; i <= squares; i++) {
-                possiblePositions.push({c: 1, r: i}, {c: squares, r: i}, {c: i, r: 1}, {c: i, r: squares});
+                    let possiblePositions = [];
+                    // Generar todas las posiciones de los bordes (fila 1, fila 8, col 1, col 8)
+                    for (let i = 1; i <= squares; i++) {
+                        possiblePositions.push({c: 1, r: i}, {c: squares, r: i}, {c: i, r: 1}, {c: i, r: squares});
+                    }
+                    
+                    // Mezclar posiciones para que el spawn sea aleatorio
+                    possiblePositions.sort(() => Math.random() - 0.5);
+                    
+                    for (let pos of possiblePositions) {
+                        let isOccupied = board.enemies.some(e => e.col === pos.c && e.row === pos.r) || 
+                        (pos.c === board.player_one.col && pos.y === board.player_one.row);
+                        
+                        if (!isOccupied) {
+                            aux_enemies.col = pos.c;
+                            aux_enemies.row = pos.r;
+                            collision = false; 
+                            break;
+                        }
+                    }
                 }
-                
-                // Mezclar posiciones para que el spawn sea aleatorio
-                possiblePositions.sort(() => Math.random() - 0.5);
-                
-                for (let pos of possiblePositions) {
-                let isOccupied = board.enemies.some(e => e.col === pos.c && e.row === pos.r) || 
-                (pos.c === board.player_one.col && pos.y === board.player_one.row);
-                
-                if (!isOccupied) {
-                aux_enemies.col = pos.c;
-                aux_enemies.row = pos.r;
-                collision = false; 
-                break;
-                }
-                }
-                }
-                
-                
+
                 // Si NO hay colisión,incluimos la enemigo
                 if (!collision) {
                     if (aux_enemies.col != board.player_one.col && aux_enemies.row != board.player_one.row) {
                         board.enemies.push(aux_enemies);
                     }
                 }
-                // Si colisona o esta en la misma posicion del jugador ponerlo en la segunda fila o columna
                 // Si es un Rey saldra una pieza extra
             }
 
@@ -279,7 +300,7 @@ function draw() {
         ctx.fillText(texto.value, (squareSize * (squares + 2 * margin)) - texto.width, squareSize * 0.25);
         ctx.fill();
 
-        texto = {value: '00000000', width: 0};
+        texto = {value: ('00000000' + board.player_one.point).slice(-8), width: 0};
         texto.width = obtenerAnchoTexto(texto.value, (squareSize * 0.5) + 'px Consolas');
 
         ctx.beginPath();
@@ -413,12 +434,23 @@ function clickBoard(c = 0, r = 0) {
                         }
                     });
                     if (collision > -1) {
+                        // Actualizamos en el typePieces[ind].count
+                        $.each(typePieces, function(ind, item) {
+                            if ((board.enemies[collision].color == typePieces[ind].color)
+                                    && (board.enemies[collision].src == typePieces[ind].src)) {
+                                typePieces[ind].count = typePieces[ind].count + 1;
+                                // Sumar puntos
+                                board.player_one.point = board.player_one.point + typePieces[ind].point;
+                                
+                                return;
+                            }
+                        });
+                        // Devolver la pieza al banquillo
                         board.enemies.splice(collision, 1);
-                        // Sumar puntos
-                    } else {
-                        board.player_one.col = aux_c;
-                        board.player_one.row = aux_r;
                     }
+                    
+                    board.player_one.col = aux_c;
+                    board.player_one.row = aux_r;
 
                     draw();
                     return; // Rompemos el bucle interno, ya encontramos un choque
