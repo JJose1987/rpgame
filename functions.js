@@ -9,11 +9,11 @@ var canvas, ctx;
 const squares = 8;
 const margin  = 1;
 
-let boardSize = 0;
+let boardSize  = 0;
 let squareSize = 0;
 
 var board = {
-    player_one: {col: 4, row: 4, src: "0x1F47E", color: '#aaa23a', walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], stamina : 3, life : 4, maxStamina : 3, maxLife : 4, move : false, point: 0}
+    player_one: {col: 4, row: 4, src: "0x26C2", color: '#000000', walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], stamina : 3, life : 4, maxStamina : 3, maxLife : 4, move : false, point: 0}
   , enemies   : []
 };
 
@@ -87,6 +87,10 @@ function main() {
     var flip = Math.random() < 0.5;
     board.enemies.push({col: flip ? edge : mid, row: flip ? mid : edge, color: typePieces[ind].color, src: typePieces[ind].src, walk: typePieces[ind].walk});
     typePieces[ind].count = typePieces[ind].count - 1;
+    // Si es un Rey saldra una pieza extra
+    while (board.enemies.at(-1)['src'] == '0x265A' || board.enemies.at(-1)['src'] == '0x265B') {
+        addEnemies(board.enemies.at(-1)['color']);
+    }
 
     update();
 }
@@ -135,6 +139,7 @@ function draw() {
             $.each(board.enemies, function(index, value) {
                 let bestMove = { col: value.col, row: value.row };
                 let minDistance = Math.hypot(board.player_one.col - value.col, board.player_one.row - value.row);
+                let hasAttacked = false; // Flag para saber si este enemigo ya atacó
 
                 // 1. Evaluar cada movimiento posible según su propiedad 'walk'
                 $.each(value.walk, function(i, step) {
@@ -145,6 +150,15 @@ function draw() {
                     if (futureCol >= 1 && futureCol <= squares && futureRow >= 1 && futureRow <= squares) {
 
                         // 3. No mover a la casilla EXACTA del jugador (dejarlo a su alrededor)
+
+                        // Si el movimiento puede llegar a la casilla del jugador
+                        if (futureCol === board.player_one.col && futureRow === board.player_one.row) {
+                            board.player_one.life -= 1;
+                            hasAttacked = true;
+                            return false; // Romper el bucle de movimientos posibles (walk)
+                        }
+                        
+                        // 3. Calcular distancia Euclidiana al jugador (solo si no ha atacado)
                         if (!(futureCol === board.player_one.col && futureRow === board.player_one.row)) {
 
                             // 4. Calcular distancia Euclidiana al jugador
@@ -169,81 +183,17 @@ function draw() {
                     }
                 });
 
-                // 6. Si el enemigo ya está adyacente al jugador y no se movió, "ataca"
-                let distFinal = Math.hypot(board.player_one.col - value.col, board.player_one.row - value.row);
-                if (distFinal <= 1.5) { // Está en una casilla contigua (incluyendo diagonales)
-                    board.player_one.life -= 1;
+                // Aplicar el movimiento solo si no atacó
+                if (!hasAttacked) {
+                    value.col = bestMove.col;
+                    value.row = bestMove.row;
                 }
-
-                // Aplicar el mejor movimiento encontrado
-                value.col = bestMove.col;
-                value.row = bestMove.row;
             });
             // Añadir
-            
-            // Filtramos los que tengan stock mayor a 0
-            var conTypePieces = $.grep(typePieces, function(item) {
-                return item.count > 0;
-            });
-
-            if (conTypePieces.length > 0) {
-                // Escoge el enemigo al azar
-                var ind  = Math.floor(Math.random() * conTypePieces.length);
-                var edge = Math.random() < 0.5 ? 1 : squares;
-                var mid  = 1 + Math.floor(Math.random() * squares);
-                var flip = Math.random() < 0.5;
-
-                var aux_enemies = {col: flip ? edge : mid, row: flip ? mid : edge, color: conTypePieces[ind].color, src: conTypePieces[ind].src, walk: conTypePieces[ind].walk, point: conTypePieces[ind].point};
-                // Actualizamos en el typePieces[ind].count
-                $.each(typePieces, function(ind, item) {
-                    if ((aux_enemies.color == typePieces[ind].color)
-                            && (aux_enemies.src == typePieces[ind].src)) {
-                        typePieces[ind].count = typePieces[ind].count - 1;
-                        return;
-                    }
-                });
-                
-                // Detectamos colisión con OTROS enemigos
-                var collision = false;
-
-                $.each(board.enemies, function(i, othervalue) {
-                    if (othervalue.col === aux_enemies.col && othervalue.row === aux_enemies.row) {
-                        collision = true;
-                        return false; // Rompemos el bucle interno, ya encontramos un choque
-                    }
-                });
-                //
-                // 3. Si hay colisión, buscar CUALQUIER posición libre en los bordes
-                if (collision) {
-                    let possiblePositions = [];
-                    // Generar todas las posiciones de los bordes (fila 1, fila 8, col 1, col 8)
-                    for (let i = 1; i <= squares; i++) {
-                        possiblePositions.push({c: 1, r: i}, {c: squares, r: i}, {c: i, r: 1}, {c: i, r: squares});
-                    }
-                    
-                    // Mezclar posiciones para que el spawn sea aleatorio
-                    possiblePositions.sort(() => Math.random() - 0.5);
-                    
-                    for (let pos of possiblePositions) {
-                        let isOccupied = board.enemies.some(e => e.col === pos.c && e.row === pos.r) || 
-                        (pos.c === board.player_one.col && pos.y === board.player_one.row);
-                        
-                        if (!isOccupied) {
-                            aux_enemies.col = pos.c;
-                            aux_enemies.row = pos.r;
-                            collision = false; 
-                            break;
-                        }
-                    }
-                }
-
-                // Si NO hay colisión,incluimos la enemigo
-                if (!collision) {
-                    if (aux_enemies.col != board.player_one.col && aux_enemies.row != board.player_one.row) {
-                        board.enemies.push(aux_enemies);
-                    }
-                }
-                // Si es un Rey saldra una pieza extra
+            addEnemies();
+            // Si es un Rey saldra una pieza extra
+            while (board.enemies.length > 0 && (board.enemies.at(-1)['src'] == '0x265A' || board.enemies.at(-1)['src'] == '0x265B')) {
+                addEnemies(board.enemies.at(-1)['color']);
             }
 
             board.player_one.stamina = board.player_one.maxStamina;
@@ -402,6 +352,19 @@ function drawPlayer(obj, collisions = null) {
         }
     });
 
+    ctx.save();
+    
+    // --- MEJORA VISUAL ---
+    // Añadir una sombra suave para dar profundidad
+    ctx.shadowBlur = 5;
+    ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+    ctx.shadowOffsetX = 2;
+    ctx.shadowOffsetY = 2;
+
+    // Dibujar el contorno del carácter para que se lea mejor en cualquier fondo
+    ctx.strokeStyle = obj.color === '#000000' ? '#ffffff' : '#000000';
+    ctx.lineWidth = 1;
+
     ctx.beginPath();
     ctx.font         = squareSize + 'px Consolas';
     ctx.textAlign    = 'center';
@@ -489,4 +452,71 @@ function obtenerAnchoTexto(texto, fuente) {
     ctx.font = fuente;
     // Medimos el texto
     return (ctx.measureText(texto)).width;
+}
+
+// Añadir Enemigos
+function addEnemies(color = '') {
+    // Filtramos los que tengan stock mayor a 0 y el parametro del color
+    var conTypePieces = $.grep(typePieces, function(item) {
+        return ((color == '')? (item.count > 0) : (item.count > 0 && item.color == color));
+    });
+
+    if (conTypePieces.length > 0) {
+        // Escoge el enemigo al azar
+        var ind  = Math.floor(Math.random() * conTypePieces.length);
+        var edge = Math.random() < 0.5 ? 1 : squares;
+        var mid  = 1 + Math.floor(Math.random() * squares);
+        var flip = Math.random() < 0.5;
+
+        var aux_enemies = {col: flip ? edge : mid, row: flip ? mid : edge, color: conTypePieces[ind].color, src: conTypePieces[ind].src, walk: conTypePieces[ind].walk, point: conTypePieces[ind].point};
+        // Actualizamos en el typePieces[ind].count
+        $.each(typePieces, function(ind, item) {
+            if ((aux_enemies.color == typePieces[ind].color)
+                    && (aux_enemies.src == typePieces[ind].src)) {
+                typePieces[ind].count = typePieces[ind].count - 1;
+                return;
+            }
+        });
+        
+        // Detectamos colisión con OTROS enemigos
+        var collision = false;
+
+        $.each(board.enemies, function(i, othervalue) {
+            if (othervalue.col === aux_enemies.col && othervalue.row === aux_enemies.row) {
+                collision = true;
+                return false; // Rompemos el bucle interno, ya encontramos un choque
+            }
+        });
+        //
+        // 3. Si hay colisión, buscar CUALQUIER posición libre en los bordes
+        if (collision) {
+            let possiblePositions = [];
+            // Generar todas las posiciones de los bordes (fila 1, fila 8, col 1, col 8)
+            for (let i = 1; i <= squares; i++) {
+                possiblePositions.push({c: 1, r: i}, {c: squares, r: i}, {c: i, r: 1}, {c: i, r: squares});
+            }
+            
+            // Mezclar posiciones para que el spawn sea aleatorio
+            possiblePositions.sort(() => Math.random() - 0.5);
+            
+            for (let pos of possiblePositions) {
+                let isOccupied = board.enemies.some(e => e.col === pos.c && e.row === pos.r) || 
+                (pos.c === board.player_one.col && pos.y === board.player_one.row);
+                
+                if (!isOccupied) {
+                    aux_enemies.col = pos.c;
+                    aux_enemies.row = pos.r;
+                    collision = false; 
+                    break;
+                }
+            }
+        }
+
+        // Si NO hay colisión,incluimos la enemigo
+        if (!collision) {
+            if (aux_enemies.col != board.player_one.col && aux_enemies.row != board.player_one.row) {
+                board.enemies.push(aux_enemies);
+            }
+        }
+    }
 }
