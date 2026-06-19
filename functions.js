@@ -14,12 +14,12 @@ const imageCache = {};
 
 // Objeto principal del estado de la partida
 var board = {
-    player_one: {
+    playerOne: {
           col: 4
         , row: 4
         , vCol: 4               // Posición visual (para animaciones fluidas)
         , vRow: 4               // Posición visual (para animaciones fluidas)
-        , src: "0x26C2"
+        , src: '0x26C2'
         , assets : 'rogue.b4feb415'
         , color: '#000000'
         , walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]] // Movimiento tipo Rey
@@ -38,31 +38,31 @@ var board = {
 var typePieces = [
     // Piezas Negras
         // Peón
-    {src: "0x265F", color: '#000000', count: 8, point: 01, assets : 'bP.09539f32', walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], hit: [[+1, +1], [-1, +1], [-1, -1], [+1, -1]]}
+    {src: '0x265F', color: '#000000', count: 8, point: 01, assets : 'bP.09539f32', walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1]], hit: [[+1, +1], [-1, +1], [-1, -1], [+1, -1]]}
         // Caballo
-  , {src: "0x265E", color: '#000000', count: 2, point: 03, assets : 'bN.28c70309', walk: [[+2, +1], [+2, -1], [-2, +1], [-2, -1], [+1, +2], [-1, +2], [+1, -2], [-1, -2]]}
+  , {src: '0x265E', color: '#000000', count: 2, point: 03, assets : 'bN.28c70309', walk: [[+2, +1], [+2, -1], [-2, +1], [-2, -1], [+1, +2], [-1, +2], [+1, -2], [-1, -2]]}
         // Alfil
-  , {src: "0x265D", color: '#000000', count: 2, point: 03, assets : 'bB.77e9debf', walk: [[+1, +1], [+1, -1], [-1, -1], [-1, +1], [+2, +2], [+2, -2], [-2, -2], [-2, +2], [+3, +3], [+3, -3], [-3, -3], [-3, +3], [+4, +4], [+4, -4], [-4, -4], [-4, +4], [+5, +5], [+5, -5], [-5, -5], [-5, +5], [+6, +6], [+6, -6], [-6, -6], [-6, +6], [+7, +7], [+7, -7], [-7, -7], [-7, +7], [+8, +8], [+8, -8], [-8, -8], [-8, +8]]}
+  , {src: '0x265D', color: '#000000', count: 2, point: 03, assets : 'bB.77e9debf', walk: [[+1, +1], [+1, -1], [-1, -1], [-1, +1], [+2, +2], [+2, -2], [-2, -2], [-2, +2], [+3, +3], [+3, -3], [-3, -3], [-3, +3], [+4, +4], [+4, -4], [-4, -4], [-4, +4], [+5, +5], [+5, -5], [-5, -5], [-5, +5], [+6, +6], [+6, -6], [-6, -6], [-6, +6], [+7, +7], [+7, -7], [-7, -7], [-7, +7], [+8, +8], [+8, -8], [-8, -8], [-8, +8]]}
         // Torre
-  , {src: "0x265C", color: '#000000', count: 2, point: 05, assets : 'bR.7b4fa825', walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -8], [+2, +0], [-2, +0], [+0, +2], [+0, -7], [+3, +0], [-3, +0], [+0, +3], [+0, -6], [+4, +0], [-4, +0], [+0, +4], [+0, -5], [+5, +0], [-5, +0], [+0, +5], [+0, -4], [+6, +0], [-6, +0], [+0, +6], [+0, -3], [+7, +0], [-7, +0], [+0, +7], [+0, -2], [+8, +0], [-8, +0], [+0, +8], [+0, -1]]}
+  , {src: '0x265C', color: '#000000', count: 2, point: 05, assets : 'bR.7b4fa825', walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -8], [+2, +0], [-2, +0], [+0, +2], [+0, -7], [+3, +0], [-3, +0], [+0, +3], [+0, -6], [+4, +0], [-4, +0], [+0, +4], [+0, -5], [+5, +0], [-5, +0], [+0, +5], [+0, -4], [+6, +0], [-6, +0], [+0, +6], [+0, -3], [+7, +0], [-7, +0], [+0, +7], [+0, -2], [+8, +0], [-8, +0], [+0, +8], [+0, -1]]}
         // Reina
-  , {src: "0x265B", color: '#000000', count: 1, point: 09, assets : 'bQ.b60573d7', walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1], [+2, +0], [-2, +0], [+0, +2], [+0, -2], [+2, +2], [-2, +2], [-2, -2], [+2, -2], [+3, +0], [-3, +0], [+0, +3], [+0, -3], [+3, +3], [-3, +3], [-3, -3], [+3, -3], [+4, +0], [-4, +0], [+0, +4], [+0, -4], [+4, +4], [-4, +4], [-4, -4], [+4, -4], [+5, +0], [-5, +0], [+0, +5], [+0, -5], [+5, +5], [-5, +5], [-5, -5], [+5, -5], [+6, +0], [-6, +0], [+0, +6], [+0, -6], [+6, +6], [-6, +6], [-6, -6], [+6, -6], [+7, +0], [-7, +0], [+0, +7], [+0, -7], [+7, +7], [-7, +7], [-7, -7], [+7, -7], [+8, +0], [-8, +0], [+0, +8], [+0, -8], [+8, +8], [-8, +8], [-8, -8], [+8, -8]]}
+  , {src: '0x265B', color: '#000000', count: 1, point: 09, assets : 'bQ.b60573d7', walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1], [+2, +0], [-2, +0], [+0, +2], [+0, -2], [+2, +2], [-2, +2], [-2, -2], [+2, -2], [+3, +0], [-3, +0], [+0, +3], [+0, -3], [+3, +3], [-3, +3], [-3, -3], [+3, -3], [+4, +0], [-4, +0], [+0, +4], [+0, -4], [+4, +4], [-4, +4], [-4, -4], [+4, -4], [+5, +0], [-5, +0], [+0, +5], [+0, -5], [+5, +5], [-5, +5], [-5, -5], [+5, -5], [+6, +0], [-6, +0], [+0, +6], [+0, -6], [+6, +6], [-6, +6], [-6, -6], [+6, -6], [+7, +0], [-7, +0], [+0, +7], [+0, -7], [+7, +7], [-7, +7], [-7, -7], [+7, -7], [+8, +0], [-8, +0], [+0, +8], [+0, -8], [+8, +8], [-8, +8], [-8, -8], [+8, -8]]}
         // Rey
-  , {src: "0x265A", color: '#000000', count: 1, point: 10, assets : 'bK.b83f0a15', walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]]}
+  , {src: '0x265A', color: '#000000', count: 1, point: 10, assets : 'bK.b83f0a15', walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]]}
 
     // Piezas Blancas
         // Peón
-  , {src: "0x265F", color: '#ffffff', count: 8, point: 01, assets : 'wP.0596b7ce', walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]], hit: [[+1, +1], [-1, +1], [-1, -1], [+1, -1]]}
+  , {src: '0x265F', color: '#ffffff', count: 8, point: 01, assets : 'wP.0596b7ce', walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1]], hit: [[+1, +1], [-1, +1], [-1, -1], [+1, -1]]}
         // Caballo
-  , {src: "0x265E", color: '#ffffff', count: 2, point: 03, assets : 'wN.ef4cde0a', walk: [[+2, +1], [+2, -1], [-2, +1], [-2, -1], [+1, +2], [-1, +2], [+1, -2], [-1, -2]]}
+  , {src: '0x265E', color: '#ffffff', count: 2, point: 03, assets : 'wN.ef4cde0a', walk: [[+2, +1], [+2, -1], [-2, +1], [-2, -1], [+1, +2], [-1, +2], [+1, -2], [-1, -2]]}
         // Alfil
-  , {src: "0x265D", color: '#ffffff', count: 2, point: 03, assets : 'wB.b7d1a118', walk: [[+1, +1], [+1, -1], [-1, -1], [-1, +1], [+2, +2], [+2, -2], [-2, -2], [-2, +2], [+3, +3], [+3, -3], [-3, -3], [-3, +3], [+4, +4], [+4, -4], [-4, -4], [-4, +4], [+5, +5], [+5, -5], [-5, -5], [-5, +5], [+6, +6], [+6, -6], [-6, -6], [-6, +6], [+7, +7], [+7, -7], [-7, -7], [-7, +7], [+8, +8], [+8, -8], [-8, -8], [-8, +8]]}
+  , {src: '0x265D', color: '#ffffff', count: 2, point: 03, assets : 'wB.b7d1a118', walk: [[+1, +1], [+1, -1], [-1, -1], [-1, +1], [+2, +2], [+2, -2], [-2, -2], [-2, +2], [+3, +3], [+3, -3], [-3, -3], [-3, +3], [+4, +4], [+4, -4], [-4, -4], [-4, +4], [+5, +5], [+5, -5], [-5, -5], [-5, +5], [+6, +6], [+6, -6], [-6, -6], [-6, +6], [+7, +7], [+7, -7], [-7, -7], [-7, +7], [+8, +8], [+8, -8], [-8, -8], [-8, +8]]}
         // Torre
-  , {src: "0x265C", color: '#ffffff', count: 2, point: 05, assets : 'wR.53013fc8', walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -8], [+2, +0], [-2, +0], [+0, +2], [+0, -7], [+3, +0], [-3, +0], [+0, +3], [+0, -6], [+4, +0], [-4, +0], [+0, +4], [+0, -5], [+5, +0], [-5, +0], [+0, +5], [+0, -4], [+6, +0], [-6, +0], [+0, +6], [+0, -3], [+7, +0], [-7, +0], [+0, +7], [+0, -2], [+8, +0], [-8, +0], [+0, +8], [+0, -1]]}
+  , {src: '0x265C', color: '#ffffff', count: 2, point: 05, assets : 'wR.53013fc8', walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -8], [+2, +0], [-2, +0], [+0, +2], [+0, -7], [+3, +0], [-3, +0], [+0, +3], [+0, -6], [+4, +0], [-4, +0], [+0, +4], [+0, -5], [+5, +0], [-5, +0], [+0, +5], [+0, -4], [+6, +0], [-6, +0], [+0, +6], [+0, -3], [+7, +0], [-7, +0], [+0, +7], [+0, -2], [+8, +0], [-8, +0], [+0, +8], [+0, -1]]}
         // Reina
-  , {src: "0x265B", color: '#ffffff', count: 1, point: 09, assets : 'wQ.c3dc7fce', walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1], [+2, +0], [-2, +0], [+0, +2], [+0, -2], [+2, +2], [-2, +2], [-2, -2], [+2, -2], [+3, +0], [-3, +0], [+0, +3], [+0, -3], [+3, +3], [-3, +3], [-3, -3], [+3, -3], [+4, +0], [-4, +0], [+0, +4], [+0, -4], [+4, +4], [-4, +4], [-4, -4], [+4, -4], [+5, +0], [-5, +0], [+0, +5], [+0, -5], [+5, +5], [-5, +5], [-5, -5], [+5, -5], [+6, +0], [-6, +0], [+0, +6], [+0, -6], [+6, +6], [-6, +6], [-6, -6], [+6, -6], [+7, +0], [-7, +0], [+0, +7], [+0, -7], [+7, +7], [-7, +7], [-7, -7], [+7, -7], [+8, +0], [-8, +0], [+0, +8], [+0, -8], [+8, +8], [-8, +8], [-8, -8], [+8, -8]]}
+  , {src: '0x265B', color: '#ffffff', count: 1, point: 09, assets : 'wQ.c3dc7fce', walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1], [+2, +0], [-2, +0], [+0, +2], [+0, -2], [+2, +2], [-2, +2], [-2, -2], [+2, -2], [+3, +0], [-3, +0], [+0, +3], [+0, -3], [+3, +3], [-3, +3], [-3, -3], [+3, -3], [+4, +0], [-4, +0], [+0, +4], [+0, -4], [+4, +4], [-4, +4], [-4, -4], [+4, -4], [+5, +0], [-5, +0], [+0, +5], [+0, -5], [+5, +5], [-5, +5], [-5, -5], [+5, -5], [+6, +0], [-6, +0], [+0, +6], [+0, -6], [+6, +6], [-6, +6], [-6, -6], [+6, -6], [+7, +0], [-7, +0], [+0, +7], [+0, -7], [+7, +7], [-7, +7], [-7, -7], [+7, -7], [+8, +0], [-8, +0], [+0, +8], [+0, -8], [+8, +8], [-8, +8], [-8, -8], [+8, -8]]}
         // Rey
-  , {src: "0x265A", color: '#ffffff', count: 1, point: 10, assets : 'wK.6a015951', walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]]}
+  , {src: '0x265A', color: '#ffffff', count: 1, point: 10, assets : 'wK.6a015951', walk: [[+1, +0], [-1, +0], [+0, +1], [+0, -1], [+1, +1], [-1, +1], [-1, -1], [+1, -1]]}
 ];
 
 // Inicialización del juego
@@ -104,8 +104,8 @@ function updateLogic() {
     const lerpSpeed = 0.2; // Velocidad de suavizado de la animación
 
     // Suavizar posición del jugador
-    board.player_one.vCol += (board.player_one.col - board.player_one.vCol) * lerpSpeed;
-    board.player_one.vRow += (board.player_one.row - board.player_one.vRow) * lerpSpeed;
+    board.playerOne.vCol += (board.playerOne.col - board.playerOne.vCol) * lerpSpeed;
+    board.playerOne.vRow += (board.playerOne.row - board.playerOne.vRow) * lerpSpeed;
 
     // Suavizar posición de enemigos
     $.each(board.enemies, function(index, enemy) {
@@ -135,34 +135,59 @@ function resizeCanvas() {
 
 // Ejecuta de forma controlada el turno de la IA Inteligente
 function endTurn() {
-    if (board.player_one.life <= 0) return;
+    if (board.playerOne.life <= 0) return;
 
     $.each(board.enemies, function(index, value) {
         let bestMove = { col: value.col, row: value.row };
-        let minDistance = Math.hypot(board.player_one.col - value.col, board.player_one.row - value.row);
+        let minDistance = Math.hypot(board.playerOne.col - value.col, board.playerOne.row - value.row);
         let hasAttacked = false;
 
+        
         $.each(value.walk, function(i, step) {
             let futureCol = value.col + step[0];
             let futureRow = value.row + step[1];
 
             // Verificación estricta de límites del tablero (1 a 8)
             if (futureCol < 1 || futureCol > 8 || futureRow < 1 || futureRow > 8) return;
-
+            
             // 1. LÓGICA DE ATAQUE
-            if (futureCol === board.player_one.col && futureRow === board.player_one.row) {
-                board.player_one.life -= 1;
-                screenFlash = 0.6; // Activa el flash visual de daño en pantalla
-                board.corpse.push({ col: futureCol, row: futureRow });
+            if (value.src == '0x265F') {
+                $.each(value.hit, function(iHit, stepHit) {
+                    let futureHitCol = value.col + stepHit[0];
+                    let futureHitRow = value.row + stepHit[1];
+                    
+                    if (futureHitCol === board.playerOne.col && futureHitRow === board.playerOne.row) {
+                        board.playerOne.life -= 1;
+                        screenFlash = 0.6; // Activa el flash visual de daño en pantalla
+                        board.corpse.push({ col: futureHitCol, row: futureHitRow });
 
-                value.col = futureCol;
-                value.row = futureRow;
-                hasAttacked = true;
-                return false; 
+                        value.col = futureHitCol;
+                        value.row = futureHitRow;
+                        hasAttacked = true;
+                        return false;
+                    }
+                });
+                
+                if (futureCol === board.playerOne.col && futureRow === board.playerOne.row) {
+                    hasAttacked = false;
+                    return false;
+                }
+                
+            } else {
+                if (futureCol === board.playerOne.col && futureRow === board.playerOne.row) {
+                    board.playerOne.life -= 1;
+                    screenFlash = 0.6; // Activa el flash visual de daño en pantalla
+                    board.corpse.push({ col: futureCol, row: futureRow });
+    
+                    value.col = futureCol;
+                    value.row = futureRow;
+                    hasAttacked = true;
+                    return false;
+                }
             }
 
             // 2. CAMINO DE ACERCAMIENTO ÓPTIMO
-            let dist = Math.hypot(board.player_one.col - futureCol, board.player_one.row - futureRow);
+            let dist = Math.hypot(board.playerOne.col - futureCol, board.playerOne.row - futureRow);
             if (dist < minDistance) {
                 let collision = false;
                 $.each(board.enemies, function(idx, other) {
@@ -182,14 +207,14 @@ function endTurn() {
         if (!hasAttacked) {
             value.col = bestMove.col;
             value.row = bestMove.row;
-        } else if (board.player_one.life > 0) {
+        } else if (board.playerOne.life > 0) {
             // Reposiciona al jugador en caso de sobrevivir a un ataque directo
             let newBox = getRandomEmptySquare();
             if (newBox) {
-                board.player_one.col = newBox.col;
-                board.player_one.row = newBox.row;
-                board.player_one.vCol = newBox.col;
-                board.player_one.vRow = newBox.row;
+                board.playerOne.col = newBox.col;
+                board.playerOne.row = newBox.row;
+                board.playerOne.vCol = newBox.col;
+                board.playerOne.vRow = newBox.row;
             }
             return false; 
         }
@@ -202,7 +227,7 @@ function endTurn() {
         .forEach(e => addEnemies(e.color));
 
     // Devolver el control y energía al jugador
-    board.player_one.stamina = board.player_one.maxStamina;
+    board.playerOne.stamina = board.playerOne.maxStamina;
 }
 
 // Dibuja los componentes en la pantalla
@@ -210,19 +235,19 @@ function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBoard();
 
-    if (board.player_one.life > 0) {
+    if (board.playerOne.life > 0) {
         // Resaltar casilla del jugador seleccionado
-        if (board.player_one.stamina > 0) {
+        if (board.playerOne.stamina > 0) {
             ctx.fillStyle = '#829769';
-            ctx.fillRect((board.player_one.col * squareSize), (board.player_one.row * squareSize), squareSize, squareSize);
+            ctx.fillRect((board.playerOne.col * squareSize), (board.playerOne.row * squareSize), squareSize, squareSize);
         }
 
-        var possibleMovements = [board.player_one];
+        var possibleMovements = [board.playerOne];
         $.merge(possibleMovements, board.enemies);
         
         // Indicar si el personaje principal con alguno de personajes de alrededor
         /*
-        $.each(board.player_one.walk, function(index, value) {
+        $.each(board.playerOne.walk, function(index, value) {
             if (((r > 0) && (r < squares + 1)) && ((c > 0) && (c < squares + 1))) {
                 var collision = -1;
                 
@@ -255,7 +280,7 @@ function draw() {
                     });
                 
                     if (!(collision > -1)) {
-                        if (value == board.player_one) {
+                        if (value == board.playerOne) {
                             drawPoligon(ctx, {color  : '#82976a'
                                             , x      : ((c * squareSize) + squareSize / 2)
                                             , y      : ((r * squareSize) + squareSize / 2)
@@ -277,15 +302,15 @@ function draw() {
             });
         });
         
-        drawPlayer(board.player_one, board.enemies);
+        drawPlayer(board.playerOne, board.enemies);
         $.each(board.enemies, function(index, value) {
-            drawPlayer(value, [board.player_one]);
+            drawPlayer(value, [board.playerOne]);
         });
         
 
         // --- INTERFAZ DEL HUD ---
         // Vidas (Corazones rojos)
-        for (let l = 0; l < board.player_one.life; l++) {
+        for (let l = 0; l < board.playerOne.life; l++) {
             ctx.font = (squareSize / 2) + 'px Consolas';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -294,7 +319,7 @@ function draw() {
         }
 
         // Energía (Diamantes azules)
-        for (let s = 0; s < board.player_one.stamina; s++) {
+        for (let s = 0; s < board.playerOne.stamina; s++) {
             ctx.font = (squareSize / 2) + 'px Consolas';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -309,7 +334,7 @@ function draw() {
         ctx.fillStyle = '#ffffff';
         ctx.fillText(txtPoints, (squareSize * (squares + 2 * margin)) - wPoints - 20, squareSize * 0.25);
 
-        let txtScore = ('00000000' + board.player_one.point).slice(-8);
+        let txtScore = ('00000000' + board.playerOne.point).slice(-8);
         ctx.fillText(txtScore, (squareSize * (squares + 2 * margin)) - wPoints - 20, squareSize * 0.75);
 
     } else {
@@ -321,8 +346,8 @@ function draw() {
         ctx.fillText('GAME OVER', boardSize / 2, squareSize * 0.5);
 
         ctx.fillStyle = '#000000';
-        var x = squareSize * ((board.player_one.row + 0.5) + (board.player_one.row * 0.02));
-        var y = squareSize * (board.player_one.col + 0.5);
+        var x = squareSize * ((board.playerOne.row + 0.5) + (board.playerOne.row * 0.02));
+        var y = squareSize * (board.playerOne.col + 0.5);
         ctx.fillText(String.fromCodePoint('0x2B6E'), y, x);
     }
 
@@ -364,11 +389,11 @@ function drawPlayer(obj, collisions = null) {
                 .then(response => response.text())
                 .then(svgText => {
                     // 2. Reemplazamos el fill viejo (o lo inyectamos en el nodo <svg> o <path>)
-                    // Este regex busca 'fill="..."' o añade uno si no existe. 
-                    // Si el SVG original no tiene fill, podemos forzarlo reemplazando "<svg" por "<svg fill='HEX'"
-                    let svgModificado = svgText.replace(/fill="[^"]*"/g, `fill="${newColor}"`);
+                    // Este regex busca 'fill='...'' o añade uno si no existe. 
+                    // Si el SVG original no tiene fill, podemos forzarlo reemplazando '<svg' por '<svg fill='HEX''
+                    let svgModificado = svgText.replace(/fill='[^']*'/g, `fill='${newColor}'`);
                     if (!svgText.includes('fill=')) {
-                        svgModificado = svgText.replace('<svg', `<svg fill="${newColor}"`);
+                        svgModificado = svgText.replace('<svg', `<svg fill='${newColor}'`);
                     }
         
                     // 3. Lo convertimos en un formato que el objeto Image entienda (Blob URL)
@@ -412,19 +437,19 @@ function drawPlayer(obj, collisions = null) {
 }
 
 function clickBoard(c = 0, r = 0) {
-    var aux_r = parseInt(r / squareSize);
-    var aux_c = parseInt(c / squareSize);
+    var auxR = parseInt(r / squareSize);
+    var auxC = parseInt(c / squareSize);
 
-    if (board.player_one.life > 0) {
-        if (board.player_one.stamina > 0) {
-            $.each(board.player_one.walk, function(index, value) {
-                if (aux_r == (value[1] + board.player_one.row) && aux_c == (value[0] + board.player_one.col)) {
-                    if (((aux_r > 0) && (aux_r < squares + 1)) && ((aux_c > 0) && (aux_c < squares + 1))) {
-                        board.player_one.stamina -= 1;
+    if (board.playerOne.life > 0) {
+        if (board.playerOne.stamina > 0) {
+            $.each(board.playerOne.walk, function(index, value) {
+                if (auxR == (value[1] + board.playerOne.row) && auxC == (value[0] + board.playerOne.col)) {
+                    if (((auxR > 0) && (auxR < squares + 1)) && ((auxC > 0) && (auxC < squares + 1))) {
+                        board.playerOne.stamina -= 1;
     
                         var collision = -1;
                         $.each(board.enemies, function(i, othervalue) {
-                            if (othervalue.col === aux_c && othervalue.row === aux_r) {
+                            if (othervalue.col === auxC && othervalue.row === auxR) {
                                 collision = i;
                                 return false;
                             }
@@ -434,18 +459,18 @@ function clickBoard(c = 0, r = 0) {
                             $.each(typePieces, function(ind, item) {
                                 if ((board.enemies[collision].color == typePieces[ind].color) && (board.enemies[collision].src == typePieces[ind].src)) {
                                     typePieces[ind].count += 1;
-                                    board.player_one.point += typePieces[ind].point;
+                                    board.playerOne.point += typePieces[ind].point;
                                     return false;
                                 }
                             });
                             board.enemies.splice(collision, 1);
                         }
     
-                        board.player_one.col = aux_c;
-                        board.player_one.row = aux_r;
+                        board.playerOne.col = auxC;
+                        board.playerOne.row = auxR;
     
                         // Si el jugador agota su energía tras este paso, se procesa el turno de la IA
-                        if (board.player_one.stamina === 0) {
+                        if (board.playerOne.stamina === 0) {
                             setTimeout(endTurn, 250); // Pequeño retraso para que el jugador vea su movimiento primero
                         }
                         return false;
@@ -455,10 +480,10 @@ function clickBoard(c = 0, r = 0) {
         }
     } else {
         // Clic para revivir en Game Over
-        if (aux_r == board.player_one.row && board.player_one.col == aux_c) {
-            board.player_one.life    = board.player_one.maxLife;
-            board.player_one.stamina = board.player_one.maxStamina;
-            board.player_one.point   = 0; // BUG SOLUCIONADO: Anteriormente apuntaba incorrectamente a board.point
+        if (auxR == board.playerOne.row && board.playerOne.col == auxC) {
+            board.playerOne.life    = board.playerOne.maxLife;
+            board.playerOne.stamina = board.playerOne.maxStamina;
+            board.playerOne.point   = 0; // BUG SOLUCIONADO: Anteriormente apuntaba incorrectamente a board.point
 
             board.enemies            = [];
             board.corpse             = [];
@@ -468,13 +493,13 @@ function clickBoard(c = 0, r = 0) {
 }
 
 function mousemoveBoard(c = 0, r = 0) {
-    var aux_r = parseInt(r / squareSize);
-    var aux_c = parseInt(c / squareSize);
+    var auxR = parseInt(r / squareSize);
+    var auxC = parseInt(c / squareSize);
     var paint = false;
 
-    $.each(board.player_one.walk, function(index, value) {
-        if (aux_r == (value[1] + board.player_one.row) && aux_c == (value[0] + board.player_one.col)) {
-            if (((aux_r > 0) && (aux_r < squares + 1)) && ((aux_c > 0) && (aux_c < squares + 1))) {
+    $.each(board.playerOne.walk, function(index, value) {
+        if (auxR == (value[1] + board.playerOne.row) && auxC == (value[0] + board.playerOne.col)) {
+            if (((auxR > 0) && (auxR < squares + 1)) && ((auxC > 0) && (auxC < squares + 1))) {
                 paint = true;
                 return false;
             }
@@ -495,30 +520,31 @@ function addEnemies(color = '') {
 
     if (conTypePieces.length > 0) {
         var ind  = Math.floor(Math.random() * conTypePieces.length);
-        var pos_enemies = getRandomEmptySquare();
+        var posEnemies = getRandomEmptySquare();
 
-        if(!pos_enemies) return;
+        if(!posEnemies) return;
 
-        var aux_enemies = {
-              col: pos_enemies.col
-            , row: pos_enemies.row
-            , vCol: pos_enemies.col
-            , vRow: pos_enemies.row
-            , color: conTypePieces[ind].color
-            , src: conTypePieces[ind].src
+        var auxEnemies = {
+              col   : posEnemies.col
+            , row   : posEnemies.row
+            , vCol  : posEnemies.col
+            , vRow  : posEnemies.row
+            , color : conTypePieces[ind].color
+            , src   : conTypePieces[ind].src
             , assets: conTypePieces[ind].assets
-            , walk: conTypePieces[ind].walk
-            , point: conTypePieces[ind].point
+            , walk  : conTypePieces[ind].walk
+            , point : conTypePieces[ind].point
+            , hit   : (conTypePieces[ind].src == '0x265F'? conTypePieces[ind].hit : conTypePieces[ind].walk)
         };
 
         $.each(typePieces, function(ind, item) {
-            if ((aux_enemies.color == typePieces[ind].color) && (aux_enemies.src == typePieces[ind].src)) {
+            if ((auxEnemies.color == typePieces[ind].color) && (auxEnemies.src == typePieces[ind].src)) {
                 typePieces[ind].count -= 1;
                 return false;
             }
         });
 
-        board.enemies.push(aux_enemies);
+        board.enemies.push(auxEnemies);
     }
 }
 
@@ -526,7 +552,7 @@ function getRandomEmptySquare() {
     let emptySquares = [];
     for (let c = 1; c <= squares; c++) {
         for (let r = 1; r <= squares; r++) {
-            let isPlayerHere = (board.player_one.col === c && board.player_one.row === r);
+            let isPlayerHere = (board.playerOne.col === c && board.playerOne.row === r);
             let isEnemyHere = board.enemies.some(enemy => enemy.col === c && enemy.row === r);
 
             if (!isPlayerHere && !isEnemyHere) {
