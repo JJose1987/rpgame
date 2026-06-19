@@ -389,11 +389,11 @@ function drawPlayer(obj, collisions = null) {
                 .then(response => response.text())
                 .then(svgText => {
                     // 2. Reemplazamos el fill viejo (o lo inyectamos en el nodo <svg> o <path>)
-                    // Este regex busca 'fill='...'' o añade uno si no existe. 
+                    // Este regex busca 'fill="..."' o añade uno si no existe. 
                     // Si el SVG original no tiene fill, podemos forzarlo reemplazando '<svg' por '<svg fill='HEX''
-                    let svgModificado = svgText.replace(/fill='[^']*'/g, `fill='${newColor}'`);
+                    let svgModificado = svgText.replace(/fill="[^"]*"/g, `fill="${newColor}"`);
                     if (!svgText.includes('fill=')) {
-                        svgModificado = svgText.replace('<svg', `<svg fill='${newColor}'`);
+                        svgModificado = svgText.replace('<svg', `<svg fill="${newColor}"`);
                     }
         
                     // 3. Lo convertimos en un formato que el objeto Image entienda (Blob URL)
